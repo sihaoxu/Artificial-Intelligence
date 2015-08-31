@@ -6,6 +6,7 @@
 # John DeNero (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
 # For more info, see http://inst.eecs.berkeley.edu/~cs188/sp09/pacman.html
 
+
 """
 Here's the intended output of this script, once you fill it in:
 
@@ -23,7 +24,17 @@ def shopSmart(orderList, fruitShops):
         fruitShops: List of FruitShops
     """    
     "*** YOUR CODE HERE ***"
-    return None
+    if fruitShops!=None:
+        lowestCost=100000.0
+        bestShop=None
+        for shop in fruitShops:
+            cost=shop.getPriceOfOrder(orderList)
+            if cost<lowestCost:  
+                lowestCost=cost
+                bestShop=shop    
+        return bestShop
+    else:
+        return None
     
 if __name__ == '__main__':
   "This code runs when you invoke the script from the command line"
