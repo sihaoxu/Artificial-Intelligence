@@ -115,7 +115,7 @@ def depthFirstSearch(problem):
                 record.append(step)
                 stack.push((succesor,record))
 
-    return result
+    #return result
     util.raiseNotDefined()
     
 
@@ -168,6 +168,9 @@ def uniformCostSearch(problem):
     record = []
 
     if problem.isGoalState(problem.getStartState()):
+       
+
+
         return []
     
     queue.push((problem.getStartState(),record),0)
@@ -188,8 +191,8 @@ def uniformCostSearch(problem):
                 explored.append(succesor)
                 record.append(step)
                 queue.push((succesor,record),problem.getCostOfActions(record))
-    print problem.getCostOfActions(result)
-    return result
+    #print problem.getCostOfActions(result)
+    #return result
     util.raiseNotDefined()
 
 def nullHeuristic(state, problem=None):
@@ -231,8 +234,8 @@ def aStarSearch(problem, heuristic=nullHeuristic):
                 explored.append(succesor)
                 record.append(step)
                 queue.push((succesor,record),problem.getCostOfActions(record)+heuristic(succesor,problem))
-    print problem.getCostOfActions(result)
-    return result
+    #print problem.getCostOfActions(result)
+    #return result
     util.raiseNotDefined()
 
 
