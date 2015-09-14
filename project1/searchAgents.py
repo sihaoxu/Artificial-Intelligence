@@ -6,6 +6,7 @@
 # John DeNero (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
 # For more info, see http://inst.eecs.berkeley.edu/~cs188/sp09/pacman.html
 import dis
+from test.test_dis import dis_bug1333982
 
 """
 This file contains all of the agents that can be selected to
@@ -528,6 +529,27 @@ class ClosestDotSearchAgent(SearchAgent):
         problem = AnyFoodSearchProblem(gameState)
 
         "*** YOUR CODE HERE ***"
+        from search import breadthFirstSearch
+        result=breadthFirstSearch(problem)
+        
+        return result
+        """
+        from util import manhattanDistance
+        result=[]
+        pointList=[]
+        position=startPosition
+        
+        closestPoint=position
+        minDis=9999999.99999
+        while not food.isEmpty():
+            for i in food:
+                distance=manhattanDistance(position,i)
+                if distance<minDis:
+                    minDis=distance
+                    closestPoint=i
+        """
+            
+        
         util.raiseNotDefined()
 
 class AnyFoodSearchProblem(PositionSearchProblem):
@@ -564,6 +586,20 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         x,y = state
 
         "*** YOUR CODE HERE ***"
+        
+        from util import manhattanDistance
+        foods=self.food.asList()
+        minDis=99999.9999
+        foodPoint=state
+        for food in foods:
+            dis=manhattanDistance(state,food)
+            if dis<minDis:
+                minDis=dis
+                foodPoint=food
+        if state==foodPoint:
+            return True
+        return False
+        
         util.raiseNotDefined()
 
 ##################
