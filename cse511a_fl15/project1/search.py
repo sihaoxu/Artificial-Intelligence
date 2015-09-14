@@ -172,12 +172,13 @@ def uniformCostSearch(problem):
 
         return []
     
-    queue.push((problem.getStartState(),[]),0)
+    queue.push((problem.getStartState(),[],0),0)
     explored.append(problem.getStartState())
 
     while not queue.isEmpty():
         node = queue.pop()
         result = node[1]
+        cost=node[2]
         for i in problem.getSuccessors(node[0]):
             succesor = i[0]
             step = i[1]
@@ -189,8 +190,8 @@ def uniformCostSearch(problem):
                 return result
             elif not succesor in explored:
                 explored.append(succesor)
-                record=result+[i[1]]
-                queue.push((succesor,record),problem.getCostOfActions(record))
+                record=result+[step]
+                queue.push((succesor,record,cost+i[2]),problem.getCostOfActions(record))
                 #print problem.getCostOfActions(record)
                 #print'!!!!!!!!'
     
