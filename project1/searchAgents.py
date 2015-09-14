@@ -482,7 +482,25 @@ def foodHeuristic(state, problem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
-    return 0
+    
+    from util import manhattanDistance
+    foodList=foodGrid.asList()
+    foodheuristic=0
+    currentPosition=position
+    while len(foodList)>0:
+        mindis=99999999999999.9999
+        foodpoint=currentPosition
+        for food in foodList:
+            dis=manhattanDistance(currentPosition,food)
+            node=food
+            if dis<mindis:
+                mindis=dis
+                foodpoint=node
+        currentPosition=foodpoint        
+        foodheuristic+=mindis
+        foodList.remove(currentPosition)
+    
+    return foodheuristic
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
