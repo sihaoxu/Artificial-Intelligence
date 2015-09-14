@@ -5,6 +5,7 @@
 # purposes. The Pacman AI projects were developed at UC Berkeley, primarily by
 # John DeNero (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
 # For more info, see http://inst.eecs.berkeley.edu/~cs188/sp09/pacman.html
+import dis
 
 """
 This file contains all of the agents that can be selected to
@@ -274,18 +275,33 @@ class CornersProblem(search.SearchProblem):
             if not startingGameState.hasFood(*corner):
                 print 'Warning: no food in corner ' + str(corner)
         self._expanded = 0 # Number of search nodes expanded
-
+        
         "*** YOUR CODE HERE ***"
+        self.cornerslist=[]
+        self.cornerslist=list(self.corners)
 
     def getStartState(self):
         "Returns the start state (in your state space, not the full Pacman state space)"
         "*** YOUR CODE HERE ***"
+        return (self.startingPosition,self.cornerslist)
         util.raiseNotDefined()
 
     def isGoalState(self, state):
         "Returns whether this search state is a goal state of the problem"
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        
+        isGoal=False
+       
+        if state[0] in self.corners:
+            if state[0] in state[1]:
+                print state[1]
+                state[1].remove(state[0])
+                print state[1]
+            if len(state[1])==0:
+                isGoal=True
+        return isGoal
+
+        #util.raiseNotDefined()
 
     def getSuccessors(self, state):
         """
@@ -298,6 +314,7 @@ class CornersProblem(search.SearchProblem):
          required to get there, and 'stepCost' is the incremental
          cost of expanding to that successor
         """
+        
 
         successors = []
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
@@ -307,12 +324,24 @@ class CornersProblem(search.SearchProblem):
             #   dx, dy = Actions.directionToVector(action)
             #   nextx, nexty = int(x + dx), int(y + dy)
             #   hitsWall = self.walls[nextx][nexty]
-
             "*** YOUR CODE HERE ***"
+            corners=list(state[1])
+            x,y = state[0]
+            dx, dy = Actions.directionToVector(action)
+            nextx, nexty = int(x + dx), int(y + dy)
+            hitsWall = self.walls[nextx][nexty]
+            if not hitsWall:
+                nextstate=(nextx,nexty)
+                cost=1
+                
+                if nextstate in corners:
+                    #print corners
+                    corners.remove(nextstate)
+                successors.append(((nextstate,corners),action,cost))
 
         self._expanded += 1
         return successors
-
+           
     def getCostOfActions(self, actions):
         """
         Returns the cost of a particular sequence of actions.  If those actions
@@ -344,7 +373,25 @@ def cornersHeuristic(state, problem):
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    return 0 # Default to trivial solution
+    from util import manhattanDistance
+    position=state[0]
+    corners2=list(state[1])
+    heuristic=0
+    currentPosition=position
+    while len(corners2)>0:
+        mindis=99999999999999.9999
+        corner2=currentPosition
+        for corner in corners2:
+            dis=manhattanDistance(currentPosition,corner)
+            node=corner
+            if dis<mindis:
+                mindis=dis
+                corner2=node
+        currentPosition=corner2        
+        heuristic+=mindis
+        corners2.remove(currentPosition)
+    
+    return heuristic # Default to trivial solution
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"

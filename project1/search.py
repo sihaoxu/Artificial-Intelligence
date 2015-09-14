@@ -79,12 +79,46 @@ def depthFirstSearch(problem):
     To get started, you might want to try some of these simple commands to
     understand the search problem that is being passed in:
 
+
+    """
+    "*** YOUR CODE HERE ***"
     print "Start:", problem.getStartState()
     print "Is the start a goal?", problem.isGoalState(problem.getStartState())
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
-    """
-    "*** YOUR CODE HERE ***"
+    
+
+    from util import Stack
+    explored = []
+    stack=Stack()
+    result = []
+    record = []
+
+    if problem.isGoalState(problem.getStartState()):
+        return []
+    
+    stack.push((problem.getStartState(),record))
+    explored.append(problem.getStartState())
+
+    while not stack.isEmpty():
+        node = stack.pop()
+        result = node[1]
+        for i in problem.getSuccessors(node[0]):
+            succesor = i[0]
+            step = i[1]
+            record = list(result)
+            if problem.isGoalState(succesor):
+                explored.append(succesor)
+                result.append(step)
+                return result
+            elif not succesor in explored:
+                explored.append(succesor)
+                record.append(step)
+                stack.push((succesor,record))
+
+    return result
     util.raiseNotDefined()
+    
+
 
 def breadthFirstSearch(problem):
     """
@@ -92,11 +126,70 @@ def breadthFirstSearch(problem):
     [2nd Edition: p 73, 3rd Edition: p 82]
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    from util import Queue
+    explored = []
+    queue=Queue()
+    result = []
+    record = []
+
+    if problem.isGoalState(problem.getStartState()):
+        return []
+    
+    queue.push((problem.getStartState(),record))
+    explored.append(problem.getStartState())
+
+    while not queue.isEmpty():
+        node = queue.pop()
+        result = node[1]
+        for i in problem.getSuccessors(node[0]):
+            succesor = i[0]
+            step = i[1]
+            record = list(result)
+            if problem.isGoalState(succesor):
+                explored.append(succesor)
+                result.append(step)
+                return result
+            
+            elif not succesor in explored:
+                explored.append(succesor)
+                record.append(step)
+                queue.push((succesor,record))
+    #return result
+
+    #util.raiseNotDefined()
 
 def uniformCostSearch(problem):
     "Search the node of least total cost first. "
     "*** YOUR CODE HERE ***"
+    from util import PriorityQueue
+    explored = []
+    queue=PriorityQueue()
+    result = []
+    record = []
+
+    if problem.isGoalState(problem.getStartState()):
+        return []
+    
+    queue.push((problem.getStartState(),record),0)
+    explored.append(problem.getStartState())
+
+    while not queue.isEmpty():
+        node = queue.pop()
+        result = node[1]
+        for i in problem.getSuccessors(node[0]):
+            succesor = i[0]
+            step = i[1]
+            record = list(result)
+            if problem.isGoalState(succesor):
+                explored.append(succesor)
+                result.append(step)
+                return result
+            elif not succesor in explored:
+                explored.append(succesor)
+                record.append(step)
+                queue.push((succesor,record),problem.getCostOfActions(record))
+    print problem.getCostOfActions(result)
+    return result
     util.raiseNotDefined()
 
 def nullHeuristic(state, problem=None):
@@ -107,8 +200,39 @@ def nullHeuristic(state, problem=None):
     return 0
 
 def aStarSearch(problem, heuristic=nullHeuristic):
+
     "Search the node that has the lowest combined cost and heuristic first."
     "*** YOUR CODE HERE ***"
+    from util import PriorityQueue
+    explored = []
+    queue=PriorityQueue()
+    result = []
+    record = []
+
+    if problem.isGoalState(problem.getStartState()):
+        return []
+    
+    queue.push((problem.getStartState(),record),heuristic(problem.getStartState(),problem))
+    explored.append(problem.getStartState())
+
+    while not queue.isEmpty():
+        node = queue.pop()
+        result = node[1]
+        for i in problem.getSuccessors(node[0]):
+            succesor = i[0]
+            step = i[1]
+            record = list(result)
+            if problem.isGoalState(succesor):
+                explored.append(succesor)
+                result.append(step)
+                return result
+            #else:
+            elif not succesor in explored:
+                explored.append(succesor)
+                record.append(step)
+                queue.push((succesor,record),problem.getCostOfActions(record)+heuristic(succesor,problem))
+    print problem.getCostOfActions(result)
+    return result
     util.raiseNotDefined()
 
 
