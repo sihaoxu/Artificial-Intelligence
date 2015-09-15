@@ -618,6 +618,7 @@ def foodHeuristic(state, problem):
                 findfood=food
         foodPosition2.remove(findfood)
         heuristic+=cost
+        node=findfood
     return heuristic
     
 
