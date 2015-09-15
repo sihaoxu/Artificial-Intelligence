@@ -246,17 +246,18 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     while not queue.isEmpty():
         node = queue.pop()
         result = node[1]
+        if problem.isGoalState(node[0]):
+            
+            return result
+        
+        explored.append(node[0])
         for i in problem.getSuccessors(node[0]):
             succesor = i[0]
             step = i[1]
             record = list(result)
-            if problem.isGoalState(succesor):
-                explored.append(succesor)
-                result.append(step)
-                return result
-            #else:
-            elif not succesor in explored:
-                explored.append(succesor)
+            
+            if not succesor in explored:
+
                 record.append(step)
                 queue.push((succesor,record),problem.getCostOfActions(record)+heuristic(succesor,problem))
     #print problem.getCostOfActions(result)
