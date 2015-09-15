@@ -504,6 +504,7 @@ def foodHeuristic(state, problem):
     
     return foodheuristic
 
+    """
 
     from util import manhattanDistance
     
@@ -530,7 +531,7 @@ def foodHeuristic(state, problem):
     
     return foodheuristic
     
-    
+    """
     foodPosition = foodGrid.asList()
     problem.heuristicInfo['visited_node'] = []
     stack_node = util.Queue()
@@ -592,8 +593,8 @@ def foodHeuristic(state, problem):
         foodPosition.remove(findfood)
         problem.heuristicInfo['foodlist']=foodPosition
     return cost
-    """
     
+    gameState=problem.startingGameState
     from util import manhattanDistance
     foodPosition = foodGrid.asList()
     if not problem.heuristicInfo.get('foodlist',False):
@@ -613,14 +614,40 @@ def foodHeuristic(state, problem):
     while len(foodPosition2) != 0:
         cost = 9999999.999
         for food in foodPosition2:
-            if cost > manhattanDistance(node, food):
-                cost = manhattanDistance(node, food)
+            #if cost > manhattanDistance(node, food):
+                #cost = manhattanDistance(node, food)
+            dis=mazeDistance(node, food, gameState)
+            if cost > dis:
+                cost=dis
                 findfood=food
         foodPosition2.remove(findfood)
         heuristic+=cost
         node=findfood
     return heuristic
     
+    gameState=problem.startingGameState
+    from util import manhattanDistance
+    foodPosition = foodGrid.asList()
+    if not problem.heuristicInfo.get('foodlist',False):
+        problem.heuristicInfo['foodlist']=foodPosition
+     
+    else:
+        foodPosition=problem.heuristicInfo['foodlist']
+    currentPosition = position
+    node = position
+    cost = 0
+    findfood=node
+    if len(foodPosition) != 0:
+        for food in foodPosition:
+            dis=mazeDistance(node, food, gameState)
+            if cost > dis:
+                cost=dis
+                findfood=food
+            
+        foodPosition.remove(findfood)
+        problem.heuristicInfo['foodlist']=foodPosition
+    return cost
+    """
 
 
 class ClosestDotSearchAgent(SearchAgent):
