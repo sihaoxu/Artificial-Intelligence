@@ -161,6 +161,7 @@ def breadthFirstSearch(problem):
 def uniformCostSearch(problem):
     "Search the node of least total cost first. "
     "*** YOUR CODE HERE ***"
+    """
     from util import PriorityQueue
     explored = []
     queue=PriorityQueue()
@@ -182,18 +183,40 @@ def uniformCostSearch(problem):
         for i in problem.getSuccessors(node[0]):
             succesor = i[0]
             step = i[1]
+            newcost=i[2]
             if problem.isGoalState(succesor):
-                #explored.append(succesor)
-                result.append(step)
+                explored.append(succesor)
+                result=result+[step]
                 #print explored
                 #print problem.getCostOfActions(result)
                 return result
             elif not succesor in explored:
                 explored.append(succesor)
-                record=result+[step]
-                queue.push((succesor,record,cost+i[2]),problem.getCostOfActions(record))
+                result=result+[step]
+                queue.push((succesor,result,cost+newcost),problem.getCostOfActions(result))
                 #print problem.getCostOfActions(record)
                 #print'!!!!!!!!'
+    """
+    from util import PriorityQueue
+    PQueue =PriorityQueue()
+    PQueue.push( (problem.getStartState(), []), 0)
+    explored = []
+
+    while not PQueue.isEmpty():
+        node= PQueue.pop()
+        result=node[1]
+        if problem.isGoalState(node[0]):
+            explored.append(node[0])
+            return result
+
+        
+
+        for i in problem.getSuccessors(node[0]):
+            if not i[0] in explored:
+                explored.append(node[0])
+                newresult = result + [i[1]]
+                PQueue.push((i[0], newresult), problem.getCostOfActions(newresult))
+
     
     util.raiseNotDefined()
 
