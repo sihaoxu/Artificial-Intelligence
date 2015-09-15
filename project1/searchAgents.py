@@ -586,7 +586,7 @@ def foodHeuristic(state, problem):
     findfood=node
     if len(foodPosition) != 0:
         for food in foodPosition:
-            if cost == 0 or cost < manhattanDistance(node, food):
+            if cost < manhattanDistance(node, food):
                 cost = manhattanDistance(node, food)
                 findfood=food
         foodPosition.remove(findfood)
