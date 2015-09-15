@@ -201,21 +201,25 @@ def uniformCostSearch(problem):
     PQueue =PriorityQueue()
     PQueue.push( (problem.getStartState(), []), 0)
     explored = []
+    result=[]
+    record=[]
 
     while not PQueue.isEmpty():
         node= PQueue.pop()
         result=node[1]
         if problem.isGoalState(node[0]):
-            explored.append(node[0])
+            
             return result
 
-        
+        explored.append(node[0])
 
         for i in problem.getSuccessors(node[0]):
+            succesor=i[0]
+            step=i[1]
+            record=list(result)
             if not i[0] in explored:
-                explored.append(node[0])
-                newresult = result + [i[1]]
-                PQueue.push((i[0], newresult), problem.getCostOfActions(newresult))
+                record.append(step)
+                PQueue.push((succesor,record), problem.getCostOfActions(record))
 
     
     util.raiseNotDefined()
@@ -231,6 +235,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
 
     "Search the node that has the lowest combined cost and heuristic first."
     "*** YOUR CODE HERE ***"
+    
     from util import PriorityQueue
     explored = []
     queue=PriorityQueue()
