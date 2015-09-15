@@ -504,7 +504,7 @@ def foodHeuristic(state, problem):
     
     return foodheuristic
 
-    """
+    
 
     from util import manhattanDistance
     
@@ -531,7 +531,7 @@ def foodHeuristic(state, problem):
     
     return foodheuristic
     
-    """
+    
     foodPosition = foodGrid.asList()
     problem.heuristicInfo['visited_node'] = []
     stack_node = util.Queue()
@@ -593,7 +593,7 @@ def foodHeuristic(state, problem):
         foodPosition.remove(findfood)
         problem.heuristicInfo['foodlist']=foodPosition
     return cost
-    
+    """
     gameState=problem.startingGameState
     from util import manhattanDistance
     foodPosition = foodGrid.asList()
@@ -624,7 +624,7 @@ def foodHeuristic(state, problem):
         heuristic+=cost
         node=findfood
     return heuristic
-    
+    """
     gameState=problem.startingGameState
     from util import manhattanDistance
     foodPosition = foodGrid.asList()
