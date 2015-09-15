@@ -483,6 +483,7 @@ def foodHeuristic(state, problem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
+    
     """
     from util import manhattanDistance
     foodList=foodGrid.asList()
@@ -502,25 +503,96 @@ def foodHeuristic(state, problem):
         foodList.remove(currentPosition)
     
     return foodheuristic
-    """
+
+
     from util import manhattanDistance
+    
     foodList=foodGrid.asList()
     foodheuristic=0
     currentPosition=position
+    GState=problem.startingGameState
+    if not problem.heuristicInfo.get('foodlist',False):
+        problem.heuristicInfo['foodlist']=foodList
+    else:
+        foodList=problem.heuristicInfo['foodlist']
     while len(foodList)>0:
-        maxdis=0
+        mindis=99999999.999
         foodpoint=currentPosition
         for food in foodList:
-            dis=manhattanDistance(currentPosition,food)
+            dis=mazeDistance(currentPosition, food,GState )
             node=food
-            if dis>maxdis:
-                maxdis=dis
+            if dis<mindis:
+                mindis=dis
                 foodpoint=node
         currentPosition=foodpoint        
-        foodheuristic+=maxdis
+        foodheuristic+=mindis
         foodList.remove(currentPosition)
     
     return foodheuristic
+    
+    
+    foodPosition = foodGrid.asList()
+    problem.heuristicInfo['visited_node'] = []
+    stack_node = util.Queue()
+    stack_node.push((position,[]))
+    problem.heuristicInfo['returnValue'] = 999999
+    currentPosition = position
+    totalCost = 0
+    node = position
+    sum = 0
+    cost = 0
+    if len(foodPosition) != 0:
+        for food in foodPosition:
+            if cost == 0 or cost < util.manhattanDistance(node, food):
+                cost = util.manhattanDistance(node, food)
+    return cost
+    
+    foodPosition = foodGrid.asList()
+    currentPosition = position
+    node = position
+    cost = 0
+    if len(foodPosition) != 0:
+        for food in foodPosition:
+            if cost == 0 or cost < util.manhattanDistance(node, food):
+                cost = util.manhattanDistance(node, food)
+    return cost
+    
+    from util import manhattanDistance
+    foodList=foodGrid.asList()
+    mindis=99999999999999.9999 
+    currentPosition=position
+    if len(foodList)>0:
+
+        foodpoint=currentPosition
+        for food in foodList:
+            dis=manhattanDistance(currentPosition,food)
+            if dis<mindis:
+                mindis=dis      
+        foodheuristic=mindis
+
+    
+    return mindis
+    """
+    from util import manhattanDistance
+    foodPosition = foodGrid.asList()
+    if not problem.heuristicInfo.get('foodlist',False):
+        problem.heuristicInfo['foodlist']=foodPosition
+     
+    else:
+        foodPosition=problem.heuristicInfo['foodlist']
+    currentPosition = position
+    node = position
+    cost = 0
+    findfood=node
+    if len(foodPosition) != 0:
+        for food in foodPosition:
+            if cost == 0 or cost < manhattanDistance(node, food):
+                cost = manhattanDistance(node, food)
+                findfood=food
+        foodPosition.remove(findfood)
+        problem.heuristicInfo['foodlist']=foodPosition
+    return cost
+
     
 
 
