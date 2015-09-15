@@ -572,7 +572,7 @@ def foodHeuristic(state, problem):
 
     
     return mindis
-    """
+    
     from util import manhattanDistance
     foodPosition = foodGrid.asList()
     if not problem.heuristicInfo.get('foodlist',False):
@@ -592,7 +592,33 @@ def foodHeuristic(state, problem):
         foodPosition.remove(findfood)
         problem.heuristicInfo['foodlist']=foodPosition
     return cost
-
+    """
+    
+    from util import manhattanDistance
+    foodPosition = foodGrid.asList()
+    if not problem.heuristicInfo.get('foodlist',False):
+        problem.heuristicInfo['foodlist']=foodPosition
+     
+    else:
+        foodPosition=problem.heuristicInfo['foodlist']
+    if position in foodPosition:
+        foodPosition.remove(position)
+        
+        problem.heuristicInfo['foodlist']=foodPosition
+    heuristic=0
+    node = position
+    foodPosition2=list(foodPosition)
+    
+    findfood=node
+    while len(foodPosition2) != 0:
+        cost = 9999999.999
+        for food in foodPosition2:
+            if cost > manhattanDistance(node, food):
+                cost = manhattanDistance(node, food)
+                findfood=food
+        foodPosition2.remove(findfood)
+        heuristic+=cost
+    return heuristic
     
 
 
