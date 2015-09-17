@@ -515,8 +515,8 @@ def foodHeuristic(state, problem):
     if len(foodList)>0:
         distance=0
         for food in foodList:
-            #dis=mazeDistance(currentPosition, food, gameState)
-            dis=manhattanDistance(currentPosition,food)
+            dis=mazeDistance(currentPosition, food, gameState)
+            #dis=manhattanDistance(currentPosition,food)
             if dis>distance:
                 distance=dis
         foodheuristic=distance
