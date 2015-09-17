@@ -505,7 +505,7 @@ def foodHeuristic(state, problem):
         foodList.remove(currentPosition)
     #print foodheuristic
     #return (foodheuristic/1.9)
-    return (foodheuristic/2.7)
+    return (foodheuristic/len(foodList))
     
     
     """
