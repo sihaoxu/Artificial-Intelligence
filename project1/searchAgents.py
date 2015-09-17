@@ -494,8 +494,8 @@ def foodHeuristic(state, problem):
         mindis=99999999999999.9999
         foodpoint=currentPosition
         for food in foodList:
-            dis=manhattanDistance(currentPosition,food)
-            #dis=mazeDistance(currentPosition, food, gameState)
+            #dis=manhattanDistance(currentPosition,food)
+            dis=mazeDistance(currentPosition, food, gameState)
             node=food
             if dis<mindis:
                 mindis=dis
@@ -503,8 +503,9 @@ def foodHeuristic(state, problem):
         currentPosition=foodpoint        
         foodheuristic+=mindis
         foodList.remove(currentPosition)
-    #print (foodheuristic/3)
-    return (foodheuristic/2)
+    print foodheuristic
+    #return (foodheuristic/2)
+    return foodheuristic
     
     
     """
