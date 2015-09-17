@@ -504,8 +504,8 @@ def foodHeuristic(state, problem):
         foodheuristic+=mindis
         foodList.remove(currentPosition)
     #print foodheuristic
-    #return (foodheuristic/1.9)
-    return (foodheuristic/len(foodList))
+    finalfoodheuristic=foodheuristic/3
+    return finalfoodheuristic
     
     
     """
