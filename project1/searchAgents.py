@@ -488,7 +488,7 @@ def foodHeuristic(state, problem):
     from util import manhattanDistance
     foodList=foodGrid.asList()
     #print len(foodList)
-    foodheuristic=0.0000
+    foodheuristic=0
     currentPosition=position
     while len(foodList)>0:
         mindis=99999999999999.9999
