@@ -483,7 +483,7 @@ def foodHeuristic(state, problem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
-    
+    """
     gameState=problem.startingGameState
     from util import manhattanDistance
     foodList=foodGrid.asList()
@@ -506,6 +506,19 @@ def foodHeuristic(state, problem):
     #print foodheuristic
     finalfoodheuristic=foodheuristic/3
     return finalfoodheuristic
+    """
+    gameState=problem.startingGameState
+    foodList=foodGrid.asList()
+    foodheuristic=0
+    currentPosition=position
+    if len(foodList)>0:
+        distance=0
+        for food in foodList:
+            dis=mazeDistance(currentPosition, food, gameState)
+            if dis>distance:
+                distance=dis
+        foodheuristic=distance
+    return foodheuristic
     
     
     """
