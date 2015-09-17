@@ -504,7 +504,7 @@ def foodHeuristic(state, problem):
         foodheuristic+=mindis
         foodList.remove(currentPosition)
     #print foodheuristic
-    finalfoodheuristic=foodheuristic/2.9
+    finalfoodheuristic=foodheuristic/3
     return finalfoodheuristic
     
     
@@ -654,38 +654,7 @@ def foodHeuristic(state, problem):
         problem.heuristicInfo['foodlist']=foodPosition
     return cost
     
-    wallPosition = problem.walls.asList()
-    position, foodGrid = state
-    foodPosition = foodGrid.asList()
-    result = []
-    problem.heuristicInfo['visited_node'] = []
-    stack_node = util.Queue()
-    stack_node.push((position,[]))
-    problem.heuristicInfo['returnValue'] = 999999
-    currentPosition = position
-    totalCost = 0
-    node = position
-    sum = 0
-    
-    if foodGrid.count() == 0:
-        return 0
-    else:
-        visited = []
-        for j in range(len(foodPosition)):
-            nearestDistance = 999999
-            for i in range(len(foodPosition)):
-                distance = mazeDistance(position,foodPosition[i], problem.startingGameState)
-                
-                distance = abs(position[0]-foodPosition[i][0]) + abs(position[1]-foodPosition[i][1])
-                if distance < nearestDistance and position != foodPosition[i] and foodPosition[i] not in visited:
-                    nearestDistance = distance
-                    index = i
-            totalCost += nearestDistance
-            position = foodPosition[index]
-            visited.append(position)
-        if totalCost/(foodGrid.count()) < problem.heuristicInfo['returnValue']:
-            problem.heuristicInfo['returnValue'] = totalCost/(foodGrid.count())
-        return totalCost/foodGrid.count()
+  
         """
         
 
