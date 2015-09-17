@@ -484,7 +484,7 @@ def foodHeuristic(state, problem):
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
     
-    """
+    
     from util import manhattanDistance
     foodList=foodGrid.asList()
     foodheuristic=0
@@ -501,9 +501,9 @@ def foodHeuristic(state, problem):
         currentPosition=foodpoint        
         foodheuristic+=mindis
         foodList.remove(currentPosition)
-    
+    print foodheuristic
     return foodheuristic
-
+    """
     
 
     from util import manhattanDistance
@@ -593,7 +593,8 @@ def foodHeuristic(state, problem):
         foodPosition.remove(findfood)
         problem.heuristicInfo['foodlist']=foodPosition
     return cost
-    """
+    
+    
     gameState=problem.startingGameState
     from util import manhattanDistance
     foodPosition = foodGrid.asList()
@@ -606,7 +607,7 @@ def foodHeuristic(state, problem):
         foodPosition.remove(position)
         
         problem.heuristicInfo['foodlist']=foodPosition
-    heuristic=0
+    heuristic=0.0
     node = position
     foodPosition2=list(foodPosition)
     
@@ -614,17 +615,19 @@ def foodHeuristic(state, problem):
     while len(foodPosition2) != 0:
         cost = 9999999.999
         for food in foodPosition2:
-            #if cost > manhattanDistance(node, food):
-                #cost = manhattanDistance(node, food)
-            dis=mazeDistance(node, food, gameState)
-            if cost > dis:
-                cost=dis
+            if cost > manhattanDistance(node, food):
+                cost = manhattanDistance(node, food)
+            #dis=mazeDistance(node, food, gameState)
+            #if cost > dis:
+                #cost=dis
                 findfood=food
         foodPosition2.remove(findfood)
         heuristic+=cost
         node=findfood
+        print heuristic
     return heuristic
-    """
+    
+    
     gameState=problem.startingGameState
     from util import manhattanDistance
     foodPosition = foodGrid.asList()
@@ -647,8 +650,44 @@ def foodHeuristic(state, problem):
         foodPosition.remove(findfood)
         problem.heuristicInfo['foodlist']=foodPosition
     return cost
-    """
+    
+    wallPosition = problem.walls.asList()
+    position, foodGrid = state
+    foodPosition = foodGrid.asList()
+    result = []
+    problem.heuristicInfo['visited_node'] = []
+    stack_node = util.Queue()
+    stack_node.push((position,[]))
+    problem.heuristicInfo['returnValue'] = 999999
+    currentPosition = position
+    totalCost = 0
+    node = position
+    sum = 0
+    
+    if foodGrid.count() == 0:
+        return 0
+    else:
+        visited = []
+        for j in range(len(foodPosition)):
+            nearestDistance = 999999
+            for i in range(len(foodPosition)):
+                distance = mazeDistance(position,foodPosition[i], problem.startingGameState)
+                
+                distance = abs(position[0]-foodPosition[i][0]) + abs(position[1]-foodPosition[i][1])
+                if distance < nearestDistance and position != foodPosition[i] and foodPosition[i] not in visited:
+                    nearestDistance = distance
+                    index = i
+            totalCost += nearestDistance
+            position = foodPosition[index]
+            visited.append(position)
+        if totalCost/(foodGrid.count()) < problem.heuristicInfo['returnValue']:
+            problem.heuristicInfo['returnValue'] = totalCost/(foodGrid.count())
+        return totalCost/foodGrid.count()
+        """
+        
 
+    
+    
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
