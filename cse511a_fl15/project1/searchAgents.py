@@ -488,10 +488,10 @@ def foodHeuristic(state, problem):
     from util import manhattanDistance
     foodList=foodGrid.asList()
     #print len(foodList)
-    foodheuristic=0.0
+    foodheuristic=0.00000
     currentPosition=position
     while len(foodList)>0:
-        mindis=99999999999999.9999
+        mindis=99999999999999.99999
         foodpoint=currentPosition
         for food in foodList:
             #dis=manhattanDistance(currentPosition,food)
