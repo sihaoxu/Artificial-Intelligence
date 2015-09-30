@@ -217,7 +217,67 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
       Returns the minimax action using self.depth and self.evaluationFunction
     """
     "*** YOUR CODE HERE ***"
+    
+    return self.abSearch(gameState)
     util.raiseNotDefined()
+    
+  def abSearch(self,gameState):
+      depth=1
+      a=-9999999999.99
+      b=9999999999.99
+      bestaction=self.max(gameState,depth,a,b)
+      return bestaction
+      
+  def max(self,gameState,depth,a,b):
+      if depth==self.depth or gameState.isWin() or gameState.isLose():
+          return self.evaluationFunction(gameState)
+      value=-999999999999.99
+      
+      actions=gameState.getLegalActions(0)
+      act=actions[0]
+      for action in actions:
+          successor=gameState.generateSuccessor(0,action)
+          mvalue=self.mini(successor,depth,1,a,b)
+          if(mvalue>value):
+              value=mvalue
+              act=action
+          if(value>=b):
+              if(depth==1):
+                  return act
+              else:
+                  return value
+          if(value>a):
+              a=value
+      if(depth==1):
+          return act
+      else:
+          return value
+  def mini(self,gameState,depth,agentIndex,a,b):
+      #print agentIndex
+      if depth==self.depth or gameState.isWin() or gameState.isLose():
+          return self.evaluationFunction(gameState)
+      value=99999999999999.99
+      actions=gameState.getLegalActions(agentIndex)
+      for action in actions:
+          successor=gameState.generateSuccessor(agentIndex,action)
+          number=gameState.getNumAgents()
+          #print number
+          if(agentIndex<number-1):
+              #print agentIndex
+              nextAgent=agentIndex+1
+              mvalue=self.mini(successor,depth,nextAgent,a,b)
+              
+          else:
+              #print 'iii'
+              nextDepth=depth+1
+              mvalue=self.max(successor,nextDepth,a,b)
+          if(value>mvalue):
+              value=mvalue
+          if(value<=a):
+              return value
+          if(value<b):
+              b=value
+      return value
 
 class ExpectimaxAgent(MultiAgentSearchAgent):
   """
