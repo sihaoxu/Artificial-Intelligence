@@ -373,8 +373,8 @@ def betterEvaluationFunction(currentGameState):
     
   for i in ghostStates:
         j=i.getPosition()
-        disGhost=mazeDistance(j,position,currentGameState)
-        #disGhost=manhattanDistance(j,position)
+        #disGhost=mazeDistance(j,position,currentGameState)
+        disGhost=manhattanDistance(j,position)
         if(i.scaredTimer!=0):
             if(disGhost==0):
                 score+=1000
@@ -385,16 +385,16 @@ def betterEvaluationFunction(currentGameState):
                score-=1000
     
   for i in capsules:
-        disCap=mazeDistance(i,position,currentGameState)
-        #disCap=manhattanDistance(i,position)
+        #disCap=mazeDistance(i,position,currentGameState)
+        disCap=manhattanDistance(i,position)
         if(disCap==0):
             score+=100
         else:
             score+=10.0/disCap
         
   for i in foods:
-        disFood=mazeDistance(i,position,currentGameState)
-        #disFood=manhattanDistance(i,position)
+        #disFood=mazeDistance(i,position,currentGameState)
+        disFood=manhattanDistance(i,position)
         score+=10.0/disFood
 
   score+=6000/(foodNumber+1)
