@@ -393,7 +393,7 @@ def betterEvaluationFunction(currentGameState):
         disFood=manhattanDistance(i,position)
         score+=10.0/disFood
 
-  score+=5000/(foodNumber+1)
+  score+=6000/(foodNumber+1)
   #print foodNumber
   return score
   
