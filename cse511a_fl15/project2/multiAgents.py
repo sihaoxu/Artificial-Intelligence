@@ -383,6 +383,10 @@ def betterEvaluationFunction(currentGameState):
         else:
             if(disGhost<2):
                score-=1000
+            elif(disGhost==2):
+                score-=500
+            #else:
+                #score-=10.0/disGhost
     
   for i in capsules:
         #disCap=mazeDistance(i,position,currentGameState)
@@ -397,7 +401,7 @@ def betterEvaluationFunction(currentGameState):
         disFood=manhattanDistance(i,position)
         score+=10.0/disFood
 
-  score+=6000/(foodNumber+1)
+  score+=6000-(foodNumber*100)
   #print foodNumber
   return score
   
