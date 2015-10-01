@@ -366,20 +366,26 @@ def betterEvaluationFunction(currentGameState):
   foodNumber=currentGameState.getNumFood()
   ghostStates=currentGameState.getGhostStates()
   capsules=currentGameState.getCapsules()
+  currentScore=currentGameState.getScore()
   
   score=0.00
   from searchAgents import mazeDistance
   from util import manhattanDistance
-    
+  
+
+  
+  score+=currentScore
   for i in ghostStates:
         j=i.getPosition()
         #disGhost=mazeDistance(j,position,currentGameState)
         disGhost=manhattanDistance(j,position)
-        if(i.scaredTimer!=0):
+        if(i.scaredTimer>disGhost):
+          if(i.scaredTimer!=0):
             if(disGhost==0):
                 score+=1000
             else:
                 score+=500.0/disGhost
+                #ikk=100
         else:
             if(disGhost<2):
                score-=1000
@@ -387,7 +393,23 @@ def betterEvaluationFunction(currentGameState):
                 score-=500
             #else:
                 #score-=10.0/disGhost
-    
+  
+  """
+  closeDis=999999.99
+  for i in ghostStates:
+      j=i.getPosition()
+      disGhost=mazeDistance(j,position,currentGameState)
+      #disGhost=manhattanDistance(j,position)
+      if(disGhost<closeDis):
+          closeDis=disGhost
+          closeG=i
+  if(closeG.scaredTimer>closeDis):
+      if(closeDis==0):
+          score+=1000
+      else:
+          score+=500.0/closeDis
+  """  
+  
   for i in capsules:
         #disCap=mazeDistance(i,position,currentGameState)
         disCap=manhattanDistance(i,position)
