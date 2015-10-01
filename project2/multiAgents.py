@@ -373,9 +373,9 @@ def betterEvaluationFunction(currentGameState):
     
   for i in ghostStates:
         j=i.getPosition()
-        disGhost=mazeDistance(j,position,currentGameState)
-        #disGhost=manhattanDistance(j,position)
-        if(i.scaredTimer>disGhost):
+        #disGhost=mazeDistance(j,position,currentGameState)
+        disGhost=manhattanDistance(j,position)
+        if(i.scaredTimer!=0):
             if(disGhost==0):
                 score+=1000
             else:
