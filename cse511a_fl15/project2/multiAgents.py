@@ -374,7 +374,7 @@ def betterEvaluationFunction(currentGameState):
   
 
   
-  score+=currentScore
+  #score+=currentScore
   for i in ghostStates:
         j=i.getPosition()
         #disGhost=mazeDistance(j,position,currentGameState)
