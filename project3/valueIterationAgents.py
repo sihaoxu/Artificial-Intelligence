@@ -44,7 +44,7 @@ class ValueIterationAgent(ValueEstimationAgent):
         values=self.values.copy()
         for state in stateList:
             if not self.mdp.isTerminal(state):
-              maxvalue=-2.00
+              maxvalue=-9999999999999.99
               actions=mdp.getPossibleActions(state)
               for action in actions:
                 Qvalue=self.getQValue(state, action)
