@@ -38,7 +38,9 @@ class QLearningAgent(ReinforcementAgent):
     ReinforcementAgent.__init__(self, **args)
 
     "*** YOUR CODE HERE ***"
-
+    
+    self.Qvalues = util.Counter()
+    
   def getQValue(self, state, action):
     """
       Returns Q(state,action)
@@ -46,6 +48,14 @@ class QLearningAgent(ReinforcementAgent):
       a state or (state,action) tuple
     """
     "*** YOUR CODE HERE ***"
+    
+    
+
+    return self.Qvalues[(state,action)]
+
+
+
+
     util.raiseNotDefined()
 
 
@@ -57,6 +67,23 @@ class QLearningAgent(ReinforcementAgent):
       terminal state, you should return a value of 0.0.
     """
     "*** YOUR CODE HERE ***"
+    
+    actions=self.getLegalActions(state)
+    if len(actions)==0:
+        return 0.0
+    maxValue=-9999999.99
+    for action in actions:
+        value=self.getQValue(state, action)
+        if value>maxValue:
+            maxValue=value
+    return maxValue
+    
+
+
+
+
+
+
     util.raiseNotDefined()
 
   def getPolicy(self, state):
@@ -66,6 +93,21 @@ class QLearningAgent(ReinforcementAgent):
       you should return None.
     """
     "*** YOUR CODE HERE ***"
+    
+    policy=util.Counter()
+    actionInPolicy=None
+    actions=self.getLegalActions(state)
+    if len(actions)==0:
+        return actionInPolicy
+    for action in actions:
+        policy[action]=self.getQValue(state, action)
+    actionInPolicy=policy.argMax()
+    return actionInPolicy
+    
+
+
+
+
     util.raiseNotDefined()
 
   def getAction(self, state):
@@ -83,9 +125,19 @@ class QLearningAgent(ReinforcementAgent):
     legalActions = self.getLegalActions(state)
     action = None
     "*** YOUR CODE HERE ***"
+    
+    probability=self.epsilon 
+
+    if len(legalActions)==0:
+        return action
+    action=self.getPolicy(state)
+    if util.flipCoin(probability):
+        return random.choice(legalActions)
+    else:
+        return action
     util.raiseNotDefined()
 
-    return action
+
 
   def update(self, state, action, nextState, reward):
     """
@@ -97,7 +149,18 @@ class QLearningAgent(ReinforcementAgent):
       it will be called on your behalf
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    
+    r=self.discount
+    a=self.alpha
+    nextStateValue=self.getValue(nextState)
+    Qvalue=self.Qvalues[(state, action)]
+    sample=reward+r*nextStateValue
+    value=(1-a)*Qvalue+a*sample
+    self.Qvalues[(state,action)]=value
+    self.Qvalues[(state,action)]=(1-a)*Qvalue+a*sample
+    
+
+    #util.raiseNotDefined()
 
 class PacmanQAgent(QLearningAgent):
   "Exactly the same as QLearningAgent, but with different default parameters"
