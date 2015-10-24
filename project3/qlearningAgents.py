@@ -250,6 +250,7 @@ class ApproximateQAgent(PacmanQAgent):
       # you might want to print your weights here for debugging
       "*** YOUR CODE HERE ***"
       #print self.weights
+      
       """
       actions=self.getAction(state)
       featureVector=self.featExtractor.getFeatures(state,actions)
