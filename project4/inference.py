@@ -236,10 +236,11 @@ class ParticleFilter(InferenceModule):
     legalPosition=self.legalPositions
     self.particles=util.Counter()
     i=0
-    while i<=self.numParticles:
-        position=random.choice(legalPosition)
-        self.particles[position]=self.particles[position]+1
-        i=i+1
+    while i<self.numParticles:
+        if i<self.numParticles:
+            position=random.choice(legalPosition)
+            self.particles[position]=self.particles[position]+1
+            i=i+1
     self.particles.normalize()
   
   def observe(self, observation, gameState):
