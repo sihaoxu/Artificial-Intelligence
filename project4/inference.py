@@ -234,13 +234,19 @@ class ParticleFilter(InferenceModule):
     "*** YOUR CODE HERE ***"
     
     legalPosition=self.legalPositions
+    self.particles=[]
+    for i in range(self.numParticles):
+        self.particles.append(random.choice(legalPosition))
+    
+    
+    """
     self.particles=util.Counter()
-
     for i in range(self.numParticles):
         position=random.choice(legalPosition)
         self.particles[position]=self.particles[position]+1
     self.particles.normalize()
-  
+    """
+    
   def observe(self, observation, gameState):
     """
     Update beliefs based on the given distance observation. Make
@@ -267,6 +273,26 @@ class ParticleFilter(InferenceModule):
     pacmanPosition = gameState.getPacmanPosition()
     "*** YOUR CODE HERE ***"
     
+    observed=util.Counter()
+    if noisyDistance==None:
+        jail=[]
+        for i in range(self.numParticles):
+            jail.append(self.getJailPosition())
+        self.particles=jail
+    else:
+        for particle in self.particles:
+            distance=util.manhattanDistance(particle,pacmanPosition)
+            emission=emissionModel[distance]
+            observed[particle]+=emission
+        if observed.totalCount()==0:
+            self.initializeUniformly(gameState)
+        else:
+            newParticles=[]
+            for i in range(self.numParticles):
+                newParticles.append(util.sample(observed))
+            self.particles=newParticles
+    
+    """
     if self.particles.totalCount()==0:
         self.initializeUniformly(self.numParticles)
     observed=util.Counter()
@@ -283,7 +309,7 @@ class ParticleFilter(InferenceModule):
             observed[position]=emission*belief
         observed.normalize()
         self.particles=observed
-        
+    """
     
     #util.raiseNotDefined()
     
@@ -301,6 +327,13 @@ class ParticleFilter(InferenceModule):
     """
     "*** YOUR CODE HERE ***"
     
+    nextParticles=[]
+    for oldPos in self.particles:
+        newPosDist = self.getPositionDistribution(self.setGhostPosition(gameState, oldPos))
+        nextParticles.append(util.sample(newPosDist))
+    self.particles=nextParticles
+    
+    """
     nextBelief=util.Counter()
     legalPositions=self.legalPositions
     for oldPos in legalPositions:
@@ -309,7 +342,7 @@ class ParticleFilter(InferenceModule):
             nextBelief[newPos]+=self.particles[oldPos]*prob
     nextBelief.normalize()
     self.particles=nextBelief
-    
+    """
     #util.raiseNotDefined()
 
   def getBeliefDistribution(self):
@@ -318,7 +351,13 @@ class ParticleFilter(InferenceModule):
     ghost locations conditioned on all evidence and time passage.
     """
     "*** YOUR CODE HERE ***"
-    BD=self.particles
+    
+    BD=util.Counter()
+    for particle in self.particles:
+        BD[particle]+=1
+    BD.normalize()
+    
+    #BD=self.particles
     return BD
     #util.raiseNotDefined()
 
