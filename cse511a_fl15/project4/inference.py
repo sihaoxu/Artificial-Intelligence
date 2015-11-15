@@ -270,7 +270,7 @@ class ParticleFilter(InferenceModule):
     "*** YOUR CODE HERE ***"
     
     if self.particles.totalCount()==0:
-        self.initializeUniformly(gameState)
+        self.initializeUniformly(self.numParticles)
     observed=util.Counter()
     legalPositions=self.legalPositions
     
