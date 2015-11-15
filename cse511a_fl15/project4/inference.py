@@ -232,6 +232,15 @@ class ParticleFilter(InferenceModule):
   def initializeUniformly(self, gameState):
     "Initializes a list of particles. Use self.numParticles for the number of particles"
     "*** YOUR CODE HERE ***"
+    
+    legalPosition=self.legalPositions
+    self.particles=util.Counter()
+    i=0
+    while i<self.numParticles:
+        position=random.choice(legalPosition)
+        self.particles[position]=self.particles[position]+1
+        i=i+1
+    self.particles.normalize()
   
   def observe(self, observation, gameState):
     """
@@ -258,7 +267,26 @@ class ParticleFilter(InferenceModule):
     emissionModel = busters.getObservationDistribution(noisyDistance)
     pacmanPosition = gameState.getPacmanPosition()
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    
+    if self.particles.totalCount()==0:
+        self.initializeUniformly(gameState)
+    observed=util.Counter()
+    legalPositions=self.legalPositions
+    
+    if noisyDistance==None:
+        for pos in self.particles:
+            self.particles[pos]=1.0
+    else:
+        for position in legalPositions:
+            Dis=util.manhattanDistance(position,pacmanPosition)
+            emission=emissionModel[Dis]
+            belief=self.particles[position]
+            observed[position]=emission*belief
+        observed.normalize()
+        self.particles=observed
+        
+    
+    #util.raiseNotDefined()
     
   def elapseTime(self, gameState):
     """
@@ -273,7 +301,17 @@ class ParticleFilter(InferenceModule):
     position.
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    
+    nextBelief=util.Counter()
+    legalPositions=self.legalPositions
+    for oldPos in legalPositions:
+        newPosDist = self.getPositionDistribution(self.setGhostPosition(gameState, oldPos))
+        for newPos,prob in newPosDist.items():
+            nextBelief[newPos]+=self.particles[oldPos]*prob
+    nextBelief.normalize()
+    self.particles=nextBelief
+    
+    #util.raiseNotDefined()
 
   def getBeliefDistribution(self):
     """
@@ -281,7 +319,9 @@ class ParticleFilter(InferenceModule):
     ghost locations conditioned on all evidence and time passage.
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    BD=self.particles
+    return BD
+    #util.raiseNotDefined()
 
 class MarginalInference(InferenceModule):
   "A wrapper around the JointInference module that returns marginal beliefs about ghosts."
