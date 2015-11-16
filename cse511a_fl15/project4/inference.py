@@ -517,7 +517,7 @@ class JointParticleFilter:
         for i in range(self.numGhosts):
             ghostPos=particle[i]
             totalWeights+=weight[i][ghostPos]
-    if totalWeights==0:
+    if totalWeights==0.0:
         self.initializeParticles()
             
     observedParticle=[]
