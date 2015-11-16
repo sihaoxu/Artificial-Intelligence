@@ -522,6 +522,7 @@ class JointParticleFilter:
         for i in range(self.numParticles):
             newParticles.append(util.sample(observed))
         self.particles=newParticles
+      
         
     """
     weight=[]
