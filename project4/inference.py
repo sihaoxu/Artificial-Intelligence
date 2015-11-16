@@ -512,12 +512,12 @@ class JointParticleFilter:
             emission=emissionModels[i][distance]
             weight[i][ghostPosition]+=emission
             
-    totalWeights=0.0        
+    totalWeights=0        
     for particle in self.particles:
         for i in range(self.numGhosts):
             ghostPos=particle[i]
             totalWeights+=weight[i][ghostPos]
-    if totalWeights==0.0:
+    if totalWeights==0:
         self.initializeParticles()
             
     observedParticle=[]
