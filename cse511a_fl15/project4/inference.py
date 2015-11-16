@@ -499,6 +499,31 @@ class JointParticleFilter:
     emissionModels = [busters.getObservationDistribution(dist) for dist in noisyDistances]
 
     "*** YOUR CODE HERE ***"
+    
+    newParticles=[]
+    observed=util.Counter()
+    for i in range(self.numGhosts):
+        if noisyDistances[i]==None:
+            for particle in range(self.numParticles):
+                particleTuple=list(self.particles[particle])
+                particleTuple[i]=self.getJailPosition(i)
+                self.particles[particle]=tuple(particleTuple)
+    for particle in self.particles:
+        emission=1.0
+        for i in range(self.numGhosts):
+            if noisyDistances[i]!=None:
+                ghostPos=particle[i]
+                distance=util.manhattanDistance(ghostPos,pacmanPosition)
+                emission=emissionModels[i][distance]*emission
+        observed[particle]+=emission
+    if observed.totalCount()==0:
+        self.initializeParticles()
+    else:
+        for i in range(self.numParticles):
+            newParticles.append(util.sample(observed))
+        self.particles=newParticles
+        
+    """
     weight=[]
     
     for i in range(self.numGhosts):
@@ -533,6 +558,8 @@ class JointParticleFilter:
         observedParticle.append(tuple(particleTuple))
 
     self.particles=observedParticle
+    """
+
             
     
   
