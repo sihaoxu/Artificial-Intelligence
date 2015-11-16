@@ -507,10 +507,11 @@ class JointParticleFilter:
     
     for particle in self.particles:
         for i in range(self.numGhosts):
-            ghostPosition=particle[i]
-            distance=util.manhattanDistance(ghostPosition,pacmanPosition)
-            emission=emissionModels[i][distance]
-            weight[i][ghostPosition]+=emission
+            if noisyDistances[i] != None:
+                ghostPosition=particle[i]
+                distance=util.manhattanDistance(ghostPosition,pacmanPosition)
+                emission=emissionModels[i][distance]
+                weight[i][ghostPosition]+=emission
             
     totalWeights=0        
     for particle in self.particles:
