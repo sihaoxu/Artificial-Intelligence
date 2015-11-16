@@ -408,8 +408,7 @@ class JointParticleFilter:
     legalPositions=self.legalPositions
     self.particles=[]
     for i in range(self.numParticles):
-        for g in range(self.numGhosts):
-            self.particles.append(tuple(random.choice(legalPositions)for g in range(self.numGhosts)))
+        self.particles.append(tuple(random.choice(legalPositions)for g in range(self.numGhosts)))
     
     #util.raiseNotDefined()
 
