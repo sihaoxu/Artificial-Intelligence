@@ -404,7 +404,14 @@ class JointParticleFilter:
   def initializeParticles(self):
     "Initializes particles randomly.  Each particle is a tuple of ghost positions. Use self.numParticles for the number of particles"
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    
+    legalPositions=self.legalPositions
+    self.particles=[]
+    for i in range(self.numParticles):
+        for g in range(self.numGhosts):
+            self.particles.append(tuple(random.choice(legalPositions)for g in range(self.numGhosts)))
+    
+    #util.raiseNotDefined()
 
   def addGhostAgent(self, agent):
     "Each ghost agent is registered separately and stored (in case they are different)."
@@ -454,6 +461,10 @@ class JointParticleFilter:
     for oldParticle in self.particles:
       newParticle = list(oldParticle) # A list of ghost positions
       "*** YOUR CODE HERE ***"
+      prevGhostPositions=list(oldParticle)
+      for i in range(self.numGhosts):
+        newPosDist = getPositionDistributionForGhost(setGhostPositions(gameState, prevGhostPositions),i, self.ghostAgents[i])
+        newParticle[i]=util.sample(newPosDist)
       newParticles.append(tuple(newParticle))
     self.particles = newParticles
 
