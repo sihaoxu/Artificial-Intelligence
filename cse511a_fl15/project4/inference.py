@@ -238,7 +238,6 @@ class ParticleFilter(InferenceModule):
     for i in range(self.numParticles):
         self.particles.append(random.choice(legalPosition))
     
-    
     """
     self.particles=util.Counter()
     for i in range(self.numParticles):
