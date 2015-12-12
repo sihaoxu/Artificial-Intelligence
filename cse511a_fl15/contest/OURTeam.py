@@ -23,8 +23,6 @@ class xxxAgent(CaptureAgent):
         self.predictInferences = {i:InferenceFilter(gameState,self.index,i) for i in self.getOpponents(gameState)}
 
         self.foodNum = 0
-        if not gameState.isOnRedTeam(self.index):
-            xxxAgent.weights['score']=-abs(xxxAgent.weights['score'])
 
   def chooseAction(self,gameState):
     try:
@@ -37,14 +35,18 @@ class xxxAgent(CaptureAgent):
                     resultAction=action
         
 
-        if xxxAgent.powerTimer>0 and self.isTimerTracker:
+        if xxxAgent.powerTimer>0:
             xxxAgent.powerTimer-=1
        
-        if gameState.generateSuccessor(self.index,action).getAgentPosition(self.index) in self.getCapsules(gameState):
-            xxxAgent.powerTimer=40
+        #if gameState.generateSuccessor(self.index,action).getAgentPosition(self.index) in self.getCapsules(gameState):
+        for i in self.getCapsules(gameState):
+            if gameState.generateSuccessor(self.index,action).getAgentPosition(self.index)==i:
+                xxxAgent.powerTimer=40
      
-        if gameState.generateSuccessor(self.index,action).getAgentPosition(self.index) in self.getFood(gameState).asList():
-            self.foodNum+=1
+        #if gameState.generateSuccessor(self.index,action).getAgentPosition(self.index) in self.getFood(gameState).asList():
+        for i in self.getFood(gameState).asList():
+            if gameState.generateSuccessor(self.index,action).getAgentPosition(self.index)==i:
+                self.foodNum+=1
 
         if self.redOrBlue(gameState)==0.0:
             self.foodNum=0
@@ -53,30 +55,6 @@ class xxxAgent(CaptureAgent):
         return random.choice(gameState.getLegalActions())
 
 
-  weights={
-           
-      'minDisFood':2.0,
-      
-      'opponent':1.0,
-      
-      
-      'score':800.0,
-    
-    
-      'ally':-0.4,
-      'capsules':3.0,
-      
-      'faceEnemy':-5000000000.0,
-      
-      'getCap':5000000000.0,
-      'oneWay':-100,
-      
-      'protect':-0.01,
-      'eatFood':100,
-      
-      'stop':-100,
-      
-      }
   def evaluate(self,gameState,action):
     width=gameState.data.layout.width
     height=gameState.data.layout.height
@@ -217,11 +195,35 @@ class xxxAgent(CaptureAgent):
       
         'stop':stopValue
         }
+    weights={
+           
+      'minDisFood':2.0,
+      
+      'opponent':1.0,
+      
+      
+      'score':800.0,
+    
+    
+      'ally':-0.4,
+      'capsules':3.0,
+      
+      'faceEnemy':-5000000000.0,
+      
+      'getCap':5000000000.0,
+      'oneWay':-100,
+      
+      'protect':-0.01,
+      'eatFood':100,
+      
+      'stop':-100,
+      
+      }
     for i in self.predictInferences:
         self.predictInferences[i].elapse(gameState)
         self.predictInferences[i].observe(gameState)
         
-    return sum([self.weights[i]*features[i] for i in features])
+    return sum([weights[i]*features[i] for i in features])
 
   def redOrBluePos(self,gameState,position):
     width=gameState.data.layout.width
